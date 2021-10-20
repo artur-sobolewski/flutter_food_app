@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:food_app/screens/meal_details_screen.dart';
 
-import './category_meals_screen.dart';
-import './categories_screen.dart';
+import './screens/category_meals_screen.dart';
+import './screens/categories_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -35,8 +36,32 @@ class MyApp extends StatelessWidget {
               ),
             ),
       ),
-      home: CategoriesScreen(),
-      routes: {'/category-meals': (ctx) => CategoryMealsScreen()},
+      // home: CategoriesScreen(),
+      initialRoute: '/', // <-- '/' default
+      routes: {
+        '/': (ctx) => CategoriesScreen(),
+        CategoryMealsScreen.routeName: (ctx) => CategoryMealsScreen(),
+        MealDetailsScreen.routeName: (ctx) => MealDetailsScreen(),
+      },
+
+      // Useful with dynamic app
+      onGenerateRoute: (settings) {
+        print(settings);
+        // Example:
+        // if (settings.name == '/meal-details') {
+        //   return ...;
+        // } else if (settings.name == 'something-else') {
+        //   return ...;
+        // }
+        // return MaterialPageRoute(
+        //   builder: (ctx) => CategoriesScreen(),
+        // );
+      },
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(
+          builder: (ctx) => CategoriesScreen(),
+        );
+      },
     );
   }
 }
