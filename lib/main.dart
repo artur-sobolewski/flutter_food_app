@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:food_app/screens/meal_details_screen.dart';
 
+import './screens/tabs_screen_2.dart';
+import './screens/favorites_screen.dart';
+import './screens/meal_details_screen.dart';
+import './screens/tabs_screen.dart';
 import './screens/category_meals_screen.dart';
 import './screens/categories_screen.dart';
 
@@ -39,9 +42,12 @@ class MyApp extends StatelessWidget {
       // home: CategoriesScreen(),
       initialRoute: '/', // <-- '/' default
       routes: {
-        '/': (ctx) => CategoriesScreen(),
+        // '/': (ctx) => TabsScreen(),   <-- For Tab screen with navigation from appBar
+        // '/': (ctx) => CategoriesScreen(),
+        '/': (ctx) => TabsScreenV2(), // <-- For Botton Navigation Bar
         CategoryMealsScreen.routeName: (ctx) => CategoryMealsScreen(),
         MealDetailsScreen.routeName: (ctx) => MealDetailsScreen(),
+        FavoritesScreen.routeName: (ctx) => FavoritesScreen(),
       },
 
       // Useful with dynamic app
