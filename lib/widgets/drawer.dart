@@ -51,7 +51,7 @@ class MainDrawer extends StatelessWidget {
             'Meals',
             Icons.restaurant,
             () {
-              Navigator.of(context).pushNamed(
+              Navigator.of(context).pushReplacementNamed(
                 TabsScreenV2.routeName,
               );
             },
@@ -60,7 +60,9 @@ class MainDrawer extends StatelessWidget {
             'Settings',
             Icons.settings,
             () {
-              Navigator.of(context).pushNamed(FiltersScreen.routeName);
+              Navigator.of(context).pushReplacementNamed(
+                FiltersScreen.routeName,
+              );
             },
           ),
         ],

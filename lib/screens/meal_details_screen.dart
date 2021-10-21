@@ -2,8 +2,19 @@ import 'package:flutter/material.dart';
 
 import '../dummy_data.dart';
 
-class MealDetailsScreen extends StatelessWidget {
+class MealDetailsScreen extends StatefulWidget {
   static const routeName = '/meal-detail';
+  final Function toggleFavoriteHandler;
+  final Function isFavorite;
+
+  MealDetailsScreen(this.toggleFavoriteHandler, this.isFavorite);
+
+  @override
+  State<MealDetailsScreen> createState() => _MealDetailsScreenState();
+}
+
+class _MealDetailsScreenState extends State<MealDetailsScreen> {
+  bool _favorite = false;
 
   Widget _buildSectionTitle(BuildContext context, String text) {
     return Container(
@@ -38,6 +49,9 @@ class MealDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final String mealId = ModalRoute.of(context).settings.arguments as String;
     final selectedMeal = DUMMY_MEALS.firstWhere((m) => m.id == mealId);
+    setState(() {
+      _favorite = widget.isFavorite(mealId);
+    });
     return Scaffold(
       appBar: AppBar(
         title: Text(selectedMeal.title),
@@ -45,13 +59,45 @@ class MealDetailsScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Container(
-              height: 300,
-              width: double.infinity,
-              child: Image.network(
-                selectedMeal.imageUrl,
-                fit: BoxFit.cover,
-              ),
+            Stack(
+              children: <Widget>[
+                Container(
+                  height: 300,
+                  width: double.infinity,
+                  child: Image.network(
+                    selectedMeal.imageUrl,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Positioned(
+                  top: 20,
+                  right: 10,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.black54,
+                    ),
+                    child: IconButton(
+                      icon: _favorite
+                          ? Icon(
+                              Icons.favorite,
+                              color: Colors.red,
+                            )
+                          : Icon(
+                              Icons.favorite_border,
+                              color: Colors.red,
+                            ),
+                      onPressed: () {
+                        widget.toggleFavoriteHandler(mealId);
+                        setState(() {
+                          _favorite = widget.isFavorite(mealId);
+                        });
+                      },
+                      iconSize: 50,
+                    ),
+                  ),
+                ),
+              ],
             ),
             _buildSectionTitle(context, 'Ingredients'),
             _buildWrapingContainer(
@@ -92,6 +138,14 @@ class MealDetailsScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.delete,
+        ),
+        onPressed: () {
+          Navigator.of(context).pop(mealId);
+        },
       ),
     );
   }
